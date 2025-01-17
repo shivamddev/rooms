@@ -15,7 +15,7 @@ const NavigationSideBar = async () => {
     return redirect("/");
   }
 
-  console.log(`NavigationSideBar1`);
+  
 
   const servers = await db.server.findMany({
     where: {
@@ -27,7 +27,7 @@ const NavigationSideBar = async () => {
     },
   });
 
-  console.log(`NavigationSideBar2`, servers);  
+    
   return (
     <div
       className="py-3 space-y-4 flex flex-col w-full items-center h-full text-primary 

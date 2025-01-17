@@ -59,6 +59,7 @@ const CreateServerModal = () => {
       console.log(`request == `, request);
       form.reset();
       router.refresh();
+      onClose();
     } catch (error) {
       console.log(`error == `, error);
     }
