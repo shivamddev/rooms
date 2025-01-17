@@ -15,6 +15,8 @@ const NavigationSideBar = async () => {
     return redirect("/");
   }
 
+  console.log(`NavigationSideBar1`);
+
   const servers = await db.server.findMany({
     where: {
       members: {
@@ -24,6 +26,8 @@ const NavigationSideBar = async () => {
       },
     },
   });
+
+  console.log(`NavigationSideBar2`, servers);  
   return (
     <div
       className="py-3 space-y-4 flex flex-col w-full items-center h-full text-primary 
@@ -33,10 +37,10 @@ const NavigationSideBar = async () => {
       <NavigationAction />
       <Separator className="h-[2px] bg-zing-300 dark:bg-zinc-700 rounded-md w-10 mx-auto" />
 
-      <ScrollArea className="flex-1 w-full">
+      <ScrollArea className="flex-1  w-full">
         {servers?.map((server, index) => {
           return (
-            <div key={server.id} className="mb-4">
+            <div key={server.id} className="!mb-4 ">
               {/* {server.name} */}
               <NavigationItem
                 id={server.id}
