@@ -30,26 +30,30 @@ const Page = async ({ params }: InviteCodeProps) => {
     },
   });
 
-  if(existingServer){
-    return redirect(`/servers/${existingServer.id}`)
+  if (existingServer) {
+    return redirect(`/servers/${existingServer.id}`);
   }
 
   const server = await db.server.update({
-    where:{
-        inviteCode: params.inviteCode,
+    where: {
+      inviteCode: params.inviteCode,
     },
-    data:{
-        members: {
-            create: [
-                {
-                    profileId: profile.id,
-                }
-            ]
-        }
+    data: {
+      members: {
+        create: [
+          {
+            profileId: profile.id,
+          },
+        ],
+      },
     },
-  })
+  });
 
-  return <div>invite page</div>;
+  if (server) {
+    return redirect(`/servers/${server.id}`);
+  }
+
+  return null;
 };
 
 export default Page;
