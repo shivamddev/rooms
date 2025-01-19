@@ -19,6 +19,7 @@ import {
   UserPlus,
   Users,
 } from "lucide-react";
+import { useModalStore } from "@/hooks/useModalStore";
 
 interface ServerHeaderProps {
   server: ServerWithMemberWithProfile;
@@ -26,6 +27,7 @@ interface ServerHeaderProps {
 }
 
 const ServerHeader = ({ server, role }: ServerHeaderProps) => {
+  const { onOpen } = useModalStore();
   const isAdmin = role === memberRole.ADMIN;
   const isModerator = isAdmin || role === memberRole.MODERATOR;
   return (
@@ -37,13 +39,16 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
          hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition
          "
         >
-          {server.name}
+          {server?.name}
           <ChevronDown className="size-5 ml-auto" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 text-xs font-medium text-black  dark:text-neutral-400 space-y-[2px]">
         {isModerator && (
-          <DropdownMenuItem className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => onOpen("invite", { server: server })}
+            className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer"
+          >
             Invite People
             <UserPlus className="ml-auto size-4" />
           </DropdownMenuItem>
