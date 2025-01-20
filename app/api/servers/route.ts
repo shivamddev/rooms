@@ -40,7 +40,7 @@ export  async function POST(req: Request) {
         })
 
 
-        console.log(`server=`, server);
+        // console.log(`server=`, server);
 
         // return new NextResponse("Server created successfully", {status: 200});
         return NextResponse.json(server);

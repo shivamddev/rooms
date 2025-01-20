@@ -50,7 +50,7 @@ const InitialModal = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(`values == `, values); 
     try{
-      const request = await axios.post("/api/severs", values);
+      const request = await axios.post("/api/servers", values);
       console.log(`request == `, request);
       form.reset();
       router.refresh()
