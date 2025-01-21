@@ -5,7 +5,7 @@ import { Channel, channelType, memberRole, Server } from "@prisma/client";
 import { Edit, Hash, Lock, Mic, Trash, Video } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import ActionTooltip from "../ActionTooltip";
-import {ModalType, useModalStore } from "@/hooks/useModalStore";
+import { ModalType, useModalStore } from "@/hooks/useModalStore";
 
 interface ServerChannelProps {
   channel: Channel;
@@ -29,10 +29,10 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
     router.push(`/servers/${params?.id}/channels/${channel.id}`);
   };
 
-  const onAction = (e:React.MouseEvent , action: ModalType)=>{
+  const onAction = (e: React.MouseEvent, action: ModalType) => {
     e.stopPropagation();
-    onOpen(action, {channel, server});
-  }
+    onOpen(action, { channel, server });
+  };
   return (
     <button
       className={cn(

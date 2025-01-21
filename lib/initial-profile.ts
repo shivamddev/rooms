@@ -3,6 +3,7 @@ import { db } from "./db";
 
 export const initialProfile = async () => {
   const user = await currentUser();
+  console.log(`user*****==`, user);
   const { userId, redirectToSignIn } = await auth();
   if (!user) {
     return redirectToSignIn();
