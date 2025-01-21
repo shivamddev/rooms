@@ -10,6 +10,10 @@ import ServerHeader from "./ServerHeader";
 import { ScrollArea } from "../ui/scroll-area";
 import ServerSearch from "./ServerSearch";
 import { Hash, Icon, Mic, ShieldAlert, ShieldCheck, Video } from "lucide-react";
+import { Separator } from "../ui/separator";
+import ServerSection from "./ServerSection";
+import ServerChannel from "./ServerChannel";
+import ServerMember from "./ServerMember";
 
 interface ServerSidebarProps {
   serverId: string;
@@ -66,19 +70,19 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
   const role = server?.members?.find((member) => {
     return member?.profileId === profile.id;
   })?.role;
-const IconMap = {
-  [channelType.TEXT]: <Hash className="mr-2 size-4" />,
-  [channelType.AUDIO]: <Mic className="mr-2 size-4" />,
-  [channelType.VIDEO]: <Video className="mr-2 size-4" />,
-};
+  const IconMap = {
+    [channelType.TEXT]: <Hash className="mr-2 size-4" />,
+    [channelType.AUDIO]: <Mic className="mr-2 size-4" />,
+    [channelType.VIDEO]: <Video className="mr-2 size-4" />,
+  };
 
-const MemberIconMap = {
-  [memberRole.GUEST]: null,
-  [memberRole.MODERATOR]: (
-    <ShieldCheck className="mr-2 size-4 text-indigo-500" />
-  ),
-  [memberRole.ADMIN]: <ShieldAlert className="mr-2 size-4 text-rose-500" />,
-};
+  const MemberIconMap = {
+    [memberRole.GUEST]: null,
+    [memberRole.MODERATOR]: (
+      <ShieldCheck className="mr-2 size-4 text-indigo-500" />
+    ),
+    [memberRole.ADMIN]: <ShieldAlert className="mr-2 size-4 text-rose-500" />,
+  };
   return (
     <div
       className={cn(
@@ -137,6 +141,83 @@ const MemberIconMap = {
             ]}
           />
         </div>
+        <Separator className="my-2 rounded-md bg-zinc-200 dark:bg-zinc-700" />
+        {!!textChannel?.length && (
+          <div className="mb-2">
+            <ServerSection
+              sectionType="channels"
+              channelType={channelType.TEXT}
+              role={role}
+              label="Text Channels"
+            />
+
+            {textChannel.map((channel, index) => (
+              <ServerChannel
+                channel={channel}
+                server={server}
+                role={role}
+                key={index}
+              />
+            ))}
+          </div>
+        )}
+
+        {!!audioChannel?.length && (
+          <div className="mb-2">
+            <ServerSection
+              sectionType="channels"
+              channelType={channelType.AUDIO}
+              role={role}
+              label="Voice Channels"
+            />
+
+            {audioChannel.map((channel, index) => (
+              <ServerChannel
+                channel={channel}
+                server={server}
+                role={role}
+                key={index}
+              />
+            ))}
+          </div>
+        )}
+        {/* video channel */}
+        {!!videoChannel?.length && (
+          <div className="mb-2">
+            <ServerSection
+              sectionType="channels"
+              channelType={channelType.VIDEO}
+              role={role}
+              label="Video Channels"
+            />
+
+            {videoChannel.map((channel, index) => (
+              <ServerChannel
+                channel={channel}
+                server={server}
+                role={role}
+                key={index}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* members */}
+
+        {!!members?.length && (
+          <div className="mb-2">
+            <ServerSection
+              sectionType="members"
+              role={role}
+              label="Members"
+              server={server}
+            />
+
+            {members.map((member, index) => (
+              <ServerMember key={index} member={member} server={server} />
+            ))}
+          </div>
+        )}
       </ScrollArea>
     </div>
   );
