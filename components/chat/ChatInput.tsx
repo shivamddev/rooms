@@ -35,7 +35,7 @@ const ChatInput = ({ apiUrl, name, Query, type }: ChatInputProps) => {
 
   const onSubmit = async (value: FormValues) => {
     try {
-      console.log(`values=`, value);
+      console.log(`values😍=`, value);
       const url = qs.stringifyUrl({
         url: apiUrl,
         query: Query,

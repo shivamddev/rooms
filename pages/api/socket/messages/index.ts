@@ -13,16 +13,16 @@ export default async function handler(
 
   try {
     const profile: any = await currentProfilePage(req);
-    console.log(`rofile in messages api===`, profile);
+    // console.log(`rofile in messages api===`, profile);
     if (!profile) {
       return res.status(401).json({ error: "Unauthorized" });
     }
     const { content, fileUrl } = req.body;
-    console.log(`content===`, content);
-    console.log(`fileUrl===`, fileUrl);
+    // console.log(`content===`, content);
+    // console.log(`fileUrl===`, fileUrl);
     const { serverId, channelId } = req.query;
-    console.log(`serverId===`, serverId);
-    console.log(`channelId===`, channelId);
+    // console.log(`serverId===`, serverId);
+    // console.log(`channelId===`, channelId);
     if (!serverId) {
       return res.status(401).json({ error: "serverId is missing" });
     }
@@ -61,8 +61,8 @@ export default async function handler(
     if (!channel) {
       return res.status(404).json({ error: "Channel not found" });
     }
-    console.log(`profile.id==`, profile.id);
-    console.log(`****`, server.members);
+    // console.log(`profile.id==`, profile.id);
+    // console.log(`****`, server.members);
     const member = server.members.find(
       (member) => member.profileId === profile.id
     );

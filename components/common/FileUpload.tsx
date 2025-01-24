@@ -13,8 +13,8 @@ interface FileUploadProps {
 
 const FileUpload = ({ endPoint, value, onChange }: FileUploadProps) => {
   console.log(`value=***`, value);
-  const fileType = value?.split(".").pop();
-
+  const fileType = value?.split("-");
+  console.log(`fileType==`, fileType);
   const [type, setType] = useState("");
   console.log(`new file type`, type);
 
@@ -23,7 +23,7 @@ const FileUpload = ({ endPoint, value, onChange }: FileUploadProps) => {
     return (
       <div className="relative size-20 ">
         <Image
-          src={value}
+          src={fileType[0]}
           alt="server image"
           fill
           priority
@@ -48,12 +48,14 @@ const FileUpload = ({ endPoint, value, onChange }: FileUploadProps) => {
       <div className="  flex   items-center p-2 mt-2 rounded-md relative bg-background/10 ">
         <FilesIcon className="size-10 fill-indigo-200 stroke-indigo-400" />
         <a
-          href={value}
+          href={fileType[0]}
           target="_blank"
           className="ml-2  !text-wrap text-sm text-indigo-500 dark:text-indigo-400 hover:underline"
           rel="noopener noreferrer"
         >
-          <p className="text-wrap overflow-hidden">{value.length > 50 ? value.slice(0, 50) + "..." : value}</p>
+          <p className="text-wrap overflow-hidden">
+            {value.length > 50 ? value.slice(0, 50) + "..." : fileType[0]}
+          </p>
         </a>
         <button
           onClick={() => {
@@ -71,12 +73,13 @@ const FileUpload = ({ endPoint, value, onChange }: FileUploadProps) => {
     <UploadDropzone
       endpoint={endPoint}
       onClientUploadComplete={(res) => {
+        console.log(`fileType====`, res?.[0])
         let typee = res?.[0].type;
         let chunkType = typee.split("/");
         console.log(`chunkType == `, chunkType);
         setType(chunkType[1]);
         // console.log(`uploadthing res == `, res?.[0]);
-        onChange(res?.[0].url);
+        onChange(`${res?.[0].url}-${chunkType[1]}`);
       }}
       onUploadError={(error: Error) => {
         console.log(`error=> `, error);

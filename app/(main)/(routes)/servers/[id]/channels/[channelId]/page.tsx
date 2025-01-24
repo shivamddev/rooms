@@ -51,6 +51,7 @@ const Page = async ({ params }: ChannelIDPageProps) => {
       <ChatMessages
         name={channel.name}
         member={member}
+        chatId={channel.id}
         apiUrl={`/api/messages`}
         socketUrl={`/api/socket/messages`}
         socketQuery={{
