@@ -54,7 +54,7 @@ const ChatMessages = ({
       paramValue,
     });
 
-  console.log(`status===`, status);
+  // console.log(`status===`, status);
   useChatScroll({
     chatRef,
     bottomRef,
