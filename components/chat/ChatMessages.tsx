@@ -6,6 +6,7 @@ import { Loader2, ServerCrash } from "lucide-react";
 import { Fragment } from "react";
 import ChatItem from "./ChatItem";
 import { format } from "date-fns";
+import { useChatSocket } from "@/hooks/useChatSocket";
 interface ChatMessagesProps {
   name: string;
   member: Member;
@@ -37,6 +38,9 @@ const ChatMessages = ({
   type,
 }: ChatMessagesProps) => {
   const queryKey = `chat:${chatId}`;
+  const addKey = `chat:${chatId}:messages`;
+  const updateKey = `chat:${chatId}:messages:update`;
+  useChatSocket({ addKey, updateKey, queryKey });
   const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useChatQuery({
       queryKey,
@@ -66,7 +70,7 @@ const ChatMessages = ({
       </div>
     );
   }
-//   console.log(`data-----`, data);
+  //   console.log(`data-----`, data);
   return (
     <div className="flex-1 flex flex-col py-4 overflow-y-auto">
       <div className="flex-1" />
@@ -74,7 +78,7 @@ const ChatMessages = ({
 
       <div className="flex flex-col-reverse ml-4">
         {data?.pages?.map((group, index) => {
-        //   console.log(`group-`, group);
+          //   console.log(`group-`, group);
           return (
             <Fragment key={index}>
               {group?.items?.map(

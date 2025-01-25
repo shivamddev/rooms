@@ -23,6 +23,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import axios from "axios";
 import { useModalStore } from "@/hooks/useModalStore";
+import { useParams, useRouter } from "next/navigation";
 
 interface ChatItemProps {
   id: string;
@@ -118,17 +119,32 @@ const ChatItem = ({
       setIsEditing(false);
     }
   };
+  const router = useRouter();
+  const params = useParams();
+  const onMemberClick = () => {
+    if (member.id === currentMember.id) {
+      return;
+    }
+
+    router.push(`/servers/${params?.id}/conversations/${member.id}`);
+  };
 
   return (
     <div className="relative group flex items-center p-4 w-full transition hover:bg-black/5">
       <div className="flex group gap-x-2 items-start w-full">
-        <div className="cursor-pointer hover:drop-shadow-md transition">
+        <div
+          onClick={onMemberClick}
+          className="cursor-pointer hover:drop-shadow-md transition"
+        >
           <UserAvtarImage src={member.profile.imageUrl} />
         </div>
         <div className="flex flex-col  w-full">
           <div className="flex !items-center gap-x-2 ">
             <div className="flex items-center">
-              <p className="font-semibold text-sm hover:underline cursor-pointer">
+              <p
+                onClick={onMemberClick}
+                className="font-semibold text-sm hover:underline cursor-pointer"
+              >
                 {member.profile.name}
               </p>
               <ActionTooltip label={member.role}>
