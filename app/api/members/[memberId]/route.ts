@@ -5,11 +5,12 @@ import { NextResponse } from "next/server";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { memberId: string } }
+  { params }: { params: Promise<{ memberId: string }> }
 ) {
   console.log(`inside delete 1`);
   try {
-    const memberId = params?.memberId;
+    const resolvedParams = await params;
+    const memberId = resolvedParams.memberId;
     const { searchParams } = new URL(req.url);
     const serverId = searchParams.get("serverId");
     const profile = await currentProfile();
@@ -40,7 +41,7 @@ export async function DELETE(
       data: {
         members: {
           deleteMany: {
-            id: params.memberId,
+            id: memberId,
             profileId: {
               not: profile.id,
             },
@@ -71,10 +72,11 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { memberId: string } }
+  { params }: { params: Promise<{ memberId: string }> }
 ) {
   try {
-    const memberId = params.memberId;
+    const resolvedParams = await params;
+    const memberId = resolvedParams.memberId;
 
     const profile = await currentProfile();
     if (!profile) {

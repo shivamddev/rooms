@@ -3,27 +3,27 @@ import { db } from "@/lib/db";
 import { currentUser, auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 interface InviteCodeProps {
-  params: {
-    inviteCode: string;
-  };
+  params: Promise<{ inviteCode: string }>;
 }
 
 const Page = async ({ params }: InviteCodeProps) => {
-  
   const { userId, redirectToSignIn } = await auth();
   const profile = await currentProfile();
   if (!profile) {
     return redirectToSignIn();
   }
 
-  const { inviteCode } = await params;
+  // Await the params promise before accessing inviteCode
+  const resolvedParams = await params;
+  const inviteCode = resolvedParams?.inviteCode;
+
   if (!inviteCode) {
     return redirect("/");
   }
 
   const existingServer = await db.server.findFirst({
     where: {
-      inviteCode: params.inviteCode,
+      inviteCode: inviteCode,
       members: {
         some: {
           profileId: profile.id,
@@ -38,7 +38,7 @@ const Page = async ({ params }: InviteCodeProps) => {
 
   const server = await db.server.update({
     where: {
-      inviteCode: params.inviteCode,
+      inviteCode: inviteCode,
     },
     data: {
       members: {

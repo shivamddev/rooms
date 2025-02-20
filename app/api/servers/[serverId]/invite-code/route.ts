@@ -5,12 +5,13 @@ import { v4 as uuidv4 } from "uuid";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { serverId: string } }
+  { params }: { params: Promise<{ serverId: string }> }
 ) {
   try {
     // console.log(`inside try`);
 
-    const { serverId } = params; // Destructure serverId directly from params
+    const resolvedParams = await params; // Destructure serverId directly from params
+    const { serverId } = resolvedParams; // Destructure serverId directly from params
     // console.log(`1 id == `, serverId);
 
     const profile = await currentProfile();

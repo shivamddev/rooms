@@ -3,13 +3,14 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 interface ServerIDPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 const ServerIDPage = async ({ params }: ServerIDPageProps) => {
-  const { id } = await params;
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
   console.log(`param==`, id);
   const profile = await currentProfile();
   const { userId, redirectToSignIn } = await auth();

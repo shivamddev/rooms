@@ -5,11 +5,12 @@ import { NextResponse } from "next/server";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { serverId: string } }
+  { params }: { params: Promise<{ serverId: string }> }
 ) {
   console.log(`inside patch route++++++`);
   try {
-    const { serverId } = params; // Destructure serverId directly from params
+    const resolvedParams = await params;
+    const { serverId } = resolvedParams; // Destructure serverId directly from params
     const { name, imageUrl } = await req.json();
     console.log(`param***`, serverId);
     const profile = await currentProfile();
@@ -39,11 +40,14 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { serverId: string } }
+  
+   { params }: { params: Promise<{ serverId: string }> }
 ) {
   console.log(`inside delete route++++++`);
   try {
-    const { serverId } = params; // Destructure serverId directly from params
+    const resolvedParams = await params;
+    const { serverId } = resolvedParams;
+    // const { serverId } = params; // Destructure serverId directly from params
     // const { name, imageUrl } = await req.json();
     console.log(`param***`, serverId);
     const profile = await currentProfile();

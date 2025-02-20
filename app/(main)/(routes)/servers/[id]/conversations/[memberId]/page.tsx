@@ -8,17 +8,20 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 interface MemberIdPageProps {
-  params: {
+  params: Promise<{
     id: string;
     memberId: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     video?: boolean;
-  };
+  }>;
 }
 
 const Page = async ({ params, searchParams }: MemberIdPageProps) => {
-  const { id, memberId } = await params;
+  const resolvedParams1 = await params;
+  const { id, memberId } = resolvedParams1;
+  const resolvedParams2 = await searchParams;
+  const { video } = resolvedParams2;
   const { userId, redirectToSignIn } = await auth();
   const profile = await currentProfile();
   if (!profile) {
@@ -60,11 +63,11 @@ const Page = async ({ params, searchParams }: MemberIdPageProps) => {
         type="conversation"
       />
 
-      {searchParams.video && (
+      {video && (
         <MediaRoom chatId={conversation.id} video={true} audio={false} />
       )}
 
-      {!searchParams.video && (
+      {!video && (
         <>
           <ChatMessages
             member={currentMember}

@@ -6,11 +6,12 @@ import { URL } from "url";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { channelId: string } }
+  { params }: { params: Promise<{ channelId: string }> }
 ) {
   console.log(`inside delete channel api****`);
   try {
-    const { channelId } = await params;
+    const resolvedParams = await params;
+    const { channelId } = resolvedParams;
     const profile = await currentProfile();
     const { searchParams } = new URL(req.url);
     const serverId = searchParams.get("serverId");
@@ -61,11 +62,12 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { channelId: string } }
+  { params }: { params: Promise<{ channelId: string }> }
 ) {
   console.log(`inside patch channel api****`);
   try {
-    const { channelId } = await params;
+    const resolvedParams = await params;
+    const { channelId } = resolvedParams;
     const { name, type } = await req.json();
     const profile = await currentProfile();
     const { searchParams } = new URL(req.url);

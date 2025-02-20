@@ -9,14 +9,16 @@ import { channelType } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 interface ChannelIDPageProps {
-  params: {
+  params: Promise<{
     id: string;
     channelId: string;
-  };
+  }>;
 }
 
 const Page = async ({ params }: ChannelIDPageProps) => {
-  const { id, channelId } = await params;
+  const resolvedParams = await params;
+
+  const { id, channelId } = resolvedParams;
   console.log(`id==`, id);
   console.log(`channelId==`, channelId);
   const { userId, redirectToSignIn } = await auth();

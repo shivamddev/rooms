@@ -4,10 +4,11 @@ import { NextResponse } from "next/server";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { serverId: string } }
+  { params }: { params: Promise<{ serverId: string }> }
 ) {
   try {
-    const serverId = params?.serverId;
+    const resolvedParams = await params;
+    const serverId = resolvedParams?.serverId;
     const profile = await currentProfile();
     if (!profile) {
       return new Response("Unauthorized", { status: 401 });
